@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Клавиошиф</title>
+
+<style>
+  body {
+    background: #0b0b0b;
+    color: #00ff88;
+    font-family: monospace;
+    text-align: center;
+    padding: 20px;
+  }
+
+  textarea {
+    width: 90%;
+    height: 120px;
+    background: black;
+    color: #00ff88;
+    border: 2px solid #00ff88;
+    font-size: 16px;
+  }
+
+  input, button {
+    margin: 5px;
+    font-size: 16px;
+  }
+
+  button {
+    background: black;
+    color: #00ff88;
+    border: 2px solid #00ff88;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background: #00ff88;
+    color: black;
+  }
+</style>
+</head>
+
+<body>
+
+<h1>🏅 КЛАВИОШИФ</h1>
+<p>Сдвиг по клавиатуре</p>
+
+<textarea id="text" placeholder="Введи текст"></textarea><br>
+
+Сдвиг:
+<input type="number" id="shift" value="1">
+
+<br>
+
+<button onclick="encrypt()">Зашифровать</button>
+<button onclick="decrypt()">Расшифровать</button>
+
+<script>
+const keyboard = "йцукенгшщзхъфывапролджэячсмитьбю";
+
+function processText(direction, mode) {
+  let textarea = document.getElementById("text");
+  let original = textarea.value;
+  let shift = Number(document.getElementById("shift").value) * direction;
+  let result = "";
+
+  for (let char of original) {
+    let lower = char.toLowerCase();
+    let index = keyboard.indexOf(lower);
+
+    if (index === -1) {
+      result += char;
+    } else {
+      let newIndex = (index + shift) % keyboard.length;
+      if (newIndex < 0) newIndex += keyboard.length;
+
+      let newChar = keyboard[newIndex];
+      result += char === char.toUpperCase()
+        ? newChar.toUpperCase()
+        : newChar;
+    }
+  }
+
+  textarea.value = result;
+
+  if (mode === "encrypt") {
+    console.log(`[зашифровано: ${original} ---> ${result}]`);
+  } else {
+    console.log(`[расшифровано: ${original} ---> ${result}]`);
+  }
+}
+
+function encrypt() {
+  processText(1, "encrypt");
+}
+
+function decrypt() {
+  processText(-1, "decrypt");
+}
+</script>
+
+</body>
+</html>
