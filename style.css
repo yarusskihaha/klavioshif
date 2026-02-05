@@ -1,1 +1,50 @@
+  body {
+    background: #0b0b0b;
+    color: #00ff88;
+    font-family: monospace;
+    text-align: center;
+    padding: 15px;
+    margin: 0;
+  }
+
+  h1 {
+    font-size: 1.6rem;
+  }
+
+  textarea {
+    width: 100%;
+    max-width: 600px;
+    height: 150px;
+    background: black;
+    color: #00ff88;
+    border: 2px solid #00ff88;
+    font-size: 16px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    padding: 10px;
+  }
+
+  input, button {
+    margin: 5px;
+    font-size: 18px;
+    padding: 10px;
+    background: black;
+    color: #00ff88;
+    border: 2px solid #00ff88;
+  }
+
+  input[type="number"] {
+    width: 70px;
+    text-align: center;
+  }
+
+  button {
+    cursor: pointer;
+    min-width: 130px;
+  }
+
+  button:hover {
+    background: #00ff88;
+    color: black;
+  }
 
