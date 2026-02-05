@@ -56,49 +56,55 @@
 
 <button onclick="encrypt()">Зашифровать</button>
 <button onclick="decrypt()">Расшифровать</button>
-
+// Gemini new script
 <script>
-const keyboard = "йцукенгшщзхъфывапролджэячсмитьбю";
+// Объект со всеми раскладками (база данных шифра)
+const layouts = {
+    ru: "йцукенгшщзхъфывапролджэячсмитьбю",
+    en: "qwertyuiopasdfghjklzxcvbnm",
+    jp: "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをん"
+};
 
-function processText(direction, mode) {
-  let textarea = document.getElementById("text");
-  let original = textarea.value;
-  let shift = Number(document.getElementById("shift").value) * direction;
-  let result = "";
+function processText(direction) {
+    let textarea = document.getElementById("text");
+    let original = textarea.value;
+    let shift = Number(document.getElementById("shift").value) * direction;
+    let result = "";
 
-  for (let char of original) {
-    let lower = char.toLowerCase();
-    let index = keyboard.indexOf(lower);
+    for (let char of original) {
+        let lower = char.toLowerCase();
+        let found = false;
 
-    if (index === -1) {
-      result += char;
-    } else {
-      let newIndex = (index + shift) % keyboard.length;
-      if (newIndex < 0) newIndex += keyboard.length;
+        // Проверяем каждую раскладку по очереди (комбинирование)
+        for (let lang in layouts) {
+            let keyboard = layouts[lang];
+            let index = keyboard.indexOf(lower);
 
-      let newChar = keyboard[newIndex];
-      result += char === char.toUpperCase()
-        ? newChar.toUpperCase()
-        : newChar;
+            if (index !== -1) {
+                // Вычисляем новый индекс с учетом длины конкретной раскладки
+                let newIndex = (index + shift) % keyboard.length;
+                if (newIndex < 0) newIndex += keyboard.length;
+
+                let newChar = keyboard[newIndex];
+                // Сохраняем регистр (большая/маленькая буква)
+                result += char === char.toUpperCase() ? newChar.toUpperCase() : newChar;
+                found = true;
+                break; // Буква найдена, переходим к следующему символу
+            }
+        }
+
+        // Если символ не найден ни в одной раскладке (пробел, цифра, смайл)
+        if (!found) {
+            result += char;
+        }
     }
-  }
 
-  textarea.value = result;
-
-  if (mode === "encrypt") {
-    console.log(`[зашифровано: ${original} ---> ${result}]`);
-  } else {
-    console.log(`[расшифровано: ${original} ---> ${result}]`);
-  }
+    textarea.value = result;
+    console.log(direction === 1 ? "Зашифровано" : "Расшифровано");
 }
 
-function encrypt() {
-  processText(1, "encrypt");
-}
-
-function decrypt() {
-  processText(-1, "decrypt");
-}
+function encrypt() { processText(1); }
+function decrypt() { processText(-1); }
 </script>
 
   <script src="script.js"></script>
